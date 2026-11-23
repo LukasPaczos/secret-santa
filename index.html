@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#16204A">
+<title>Święta na Pszowskiej</title>
+<meta property="og:title" content="Święta na Pszowskiej 🎁">
+<meta property="og:description" content="Twój osobisty los na Wigilię. Otwórz i sprawdź, komu kupujesz prezent.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%81%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700;800&family=Yeseva+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night: #16204A;
+    --night-deep: #0C1430;
+    --red: #D62839;
+    --red-deep: #A81C2C;
+    --green: #1F8A5B;
+    --gold: #F4C542;
+    --paper: #FFF8EC;
+    --pink: #F28AB2;
+    --ink: #16204A;
+    --display: "Yeseva One", Georgia, "Times New Roman", serif;
+    --body: "Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    font-family: var(--body);
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: var(--paper);
+    background: var(--night-deep);
+    overflow-x: hidden;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1;
+    background:
+      radial-gradient(120% 70% at 80% 0%, #24346F 0%, transparent 60%),
+      linear-gradient(180deg, var(--night) 0%, var(--night-deep) 100%);
+  }
+  [hidden] { display: none !important; }
+
+  #snow { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+
+  /* Pierwsza gwiazdka */
+  .first-star {
+    position: fixed; top: max(1.25rem, env(safe-area-inset-top)); right: 1.5rem;
+    width: 44px; height: 44px; z-index: 1; pointer-events: none;
+    filter: drop-shadow(0 0 10px rgba(244,197,66,.9)) drop-shadow(0 0 26px rgba(244,197,66,.45));
+    animation: twinkle 3.4s ease-in-out infinite;
+  }
+  @keyframes twinkle { 0%,100% { transform: scale(1) rotate(0); opacity: 1; } 50% { transform: scale(.82) rotate(8deg); opacity: .8; } }
+
+  .house {
+    position: fixed; left: 0; right: 0; bottom: 0; width: 100%; height: 130px;
+    z-index: 1; pointer-events: none;
+  }
+  .house .win { animation: flicker 5s ease-in-out infinite; }
+  .house .win:nth-of-type(2n) { animation-delay: -2.1s; }
+  @keyframes flicker { 0%,100% { opacity: 1; } 45% { opacity: .82; } 55% { opacity: .95; } }
+
+  main {
+    position: relative; z-index: 2;
+    max-width: 30rem; margin: 0 auto;
+    padding: max(2.5rem, env(safe-area-inset-top)) 1.25rem 10rem;
+    text-align: center;
+  }
+  main.wide { max-width: 44rem; }
+
+  h1, h2 { font-family: var(--display); font-weight: 400; margin: 0; line-height: 1.12; }
+  h1 { font-size: clamp(2.1rem, 9vw, 3rem); }
+  .lead { margin: .75rem auto 0; max-width: 22rem; color: #DCE3FF; }
+
+  /* ---------- Gift ---------- */
+  .gift {
+    display: block; margin: 1.75rem auto .5rem; padding: 0; border: 0; background: none;
+    width: min(78vw, 300px); aspect-ratio: 1 / 1.05; cursor: pointer;
+    -webkit-tap-highlight-color: transparent; border-radius: 24px;
+  }
+  .gift svg { width: 100%; height: 100%; overflow: visible; display: block; }
+  .gift:focus-visible { outline: 4px solid var(--gold); outline-offset: 6px; }
+  .gift.idle svg { animation: nudge 3.2s ease-in-out infinite; transform-origin: 50% 90%; }
+  @keyframes nudge {
+    0%, 70%, 100% { transform: rotate(0) translateY(0); }
+    74% { transform: rotate(-4deg) translateY(-6px); }
+    78% { transform: rotate(4deg) translateY(-8px); }
+    82% { transform: rotate(-3deg) translateY(-4px); }
+    86% { transform: rotate(0) translateY(0); }
+  }
+  #lid { transform-box: fill-box; transform-origin: 50% 100%; transition: transform .75s cubic-bezier(.2,.9,.25,1.1), opacity .6s ease .35s; }
+  #bow { transform-box: fill-box; transform-origin: 50% 90%; }
+  #burst { transform-box: fill-box; transform-origin: 50% 50%; transform: scale(0); opacity: 0; transition: transform .9s cubic-bezier(.2,.9,.3,1.2), opacity .4s ease; }
+  .gift.opening svg { animation: none; }
+  .gift.opening #bow { animation: bowpop .35s ease-in-out 2; }
+  @keyframes bowpop { 50% { transform: scale(1.18) rotate(-6deg); } }
+  .gift.open #lid { transform: translate(38%, -95%) rotate(32deg); opacity: 0; }
+  .gift.open #burst { transform: scale(1); opacity: 1; animation: spin 14s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .gift.open { cursor: default; }
+
+  .cta {
+    font: 800 1.35rem/1 var(--body); letter-spacing: .01em;
+    color: var(--ink); background: var(--gold);
+    border: 0; border-radius: 999px; padding: 1.15rem 2.4rem; min-height: 64px;
+    box-shadow: 0 6px 0 #B8901F, 0 14px 30px rgba(0,0,0,.35);
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .cta:active { transform: translateY(4px); box-shadow: 0 2px 0 #B8901F, 0 6px 14px rgba(0,0,0,.35); }
+  .cta:focus-visible { outline: 4px solid var(--paper); outline-offset: 4px; }
+
+  /* ---------- Result ---------- */
+  .result { margin-top: .5rem; }
+  .result .for { margin: 0; font-size: 1.3rem; color: #DCE3FF; }
+  .who {
+    margin: .35rem 0 .25rem; font-family: var(--display);
+    font-size: clamp(2.9rem, 14vw, 4.6rem); line-height: 1.05; color: var(--gold);
+    text-shadow: 0 0 24px rgba(244,197,66,.45), 0 3px 0 var(--red-deep);
+    overflow-wrap: anywhere;
+  }
+  .secret { margin: 1rem auto 0; color: #DCE3FF; font-style: italic; }
+  .result.show .for    { animation: rise .6s ease both; }
+  .result.show .who    { animation: grow .9s cubic-bezier(.2,.9,.3,1.3) .15s both; }
+  .result.show .secret { animation: rise .6s ease .9s both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes grow { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: none; } }
+
+  /* ---------- Paper card (wycinanka edge) ---------- */
+  .card {
+    position: relative; margin: 2.5rem auto 0; padding: 2.6rem 1.4rem 1.6rem;
+    background: var(--paper); color: var(--ink); border-radius: 0 0 20px 20px;
+    --scallop: radial-gradient(circle at 12px 0, transparent 11px, #000 12px);
+    -webkit-mask: var(--scallop) top / 24px 100% repeat-x;
+            mask: var(--scallop) top / 24px 100% repeat-x;
+    box-shadow: 0 20px 50px rgba(0,0,0,.35);
+  }
+  .card .rosette { width: 64px; height: 64px; display: block; margin: 0 auto .5rem; }
+  .card h2 { font-size: 2.2rem; color: var(--red); }
+  .card .date { margin: .2rem 0 0; font-weight: 800; font-size: 1.4rem; }
+  .card .place { margin: 0; font-size: 1.3rem; }
+  .card .note { margin: 1rem auto 0; max-width: 21rem; }
+  .card .budget { margin: 1rem auto 0; display: inline-block; padding: .35rem 1rem; border-radius: 999px; background: var(--green); color: var(--paper); font-weight: 700; }
+  .card .countdown { margin: 1.1rem 0 0; padding-top: 1rem; border-top: 2px dashed rgba(22,32,74,.2); font-weight: 700; color: var(--green); }
+  .notyou { margin: 1.75rem auto 0; font-size: 1rem; color: #AEB8E6; max-width: 22rem; }
+
+  /* ---------- Confetti ---------- */
+  .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 5; overflow: hidden; }
+  .confetti span {
+    position: absolute; top: -40px; left: var(--x); width: var(--s); height: var(--s);
+    animation: fall var(--d) cubic-bezier(.3,.6,.5,1) var(--delay) forwards;
+  }
+  .confetti svg { width: 100%; height: 100%; display: block; }
+  @keyframes fall {
+    0%   { transform: translate(0, 0) rotate(0); opacity: 1; }
+    100% { transform: translate(var(--dx), 110vh) rotate(var(--r)); opacity: .9; }
+  }
+
+  /* ---------- Admin ---------- */
+  .admin { text-align: left; }
+  .admin h1 { text-align: center; }
+  .admin .lead { text-align: center; }
+  .panel { background: var(--paper); color: var(--ink); border-radius: 18px; padding: 1.4rem 1.25rem; margin-top: 1.5rem; box-shadow: 0 18px 40px rgba(0,0,0,.3); }
+  .panel h2 { font-size: 1.6rem; color: var(--red); margin-bottom: .25rem; }
+  .field { margin-top: 1.1rem; }
+  .field label, .field .label { display: block; font-weight: 800; margin-bottom: .3rem; }
+  .hint { font-size: 1rem; color: #4A5585; margin: .25rem 0 0; }
+  textarea, input[type=text], input[type=url], select {
+    width: 100%; font: 500 1.1rem/1.4 var(--body); color: var(--ink);
+    background: #fff; border: 2px solid #C9CDE0; border-radius: 12px; padding: .7rem .85rem;
+  }
+  textarea { min-height: 11rem; resize: vertical; }
+  textarea:focus, input:focus, select:focus { outline: 3px solid var(--gold); outline-offset: 1px; border-color: var(--night); }
+  .check { display: flex; gap: .6rem; align-items: flex-start; margin-top: .8rem; font-size: 1.05rem; }
+  .check input { width: 1.4rem; height: 1.4rem; margin-top: .15rem; accent-color: var(--green); flex: none; }
+  .btn {
+    font: 700 1.05rem/1 var(--body); border-radius: 999px; border: 2px solid var(--night);
+    background: #fff; color: var(--ink); padding: .65rem 1rem; cursor: pointer; min-height: 44px;
+    display: inline-flex; align-items: center; justify-content: center; gap: .35rem; text-decoration: none;
+  }
+  .btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .btn.primary { background: var(--red); color: #fff; border-color: var(--red); font-size: 1.2rem; padding: .9rem 1.6rem; }
+  .btn.wa { background: #1F8A5B; color: #fff; border-color: #1F8A5B; }
+  .error { color: var(--red); font-weight: 700; margin: .9rem 0 0; }
+  .warn { background: #FFF0C2; border-radius: 12px; padding: .7rem .9rem; margin-top: 1rem; font-size: 1rem; }
+  .rows { list-style: none; padding: 0; margin: 1rem 0 0; }
+  .rows li { border-top: 1px solid #E2E4EE; padding: .9rem 0; }
+  .rows li:first-child { border-top: 0; }
+  .rows .name { font-weight: 800; font-size: 1.2rem; }
+  .rows .name small { font-weight: 500; color: #4A5585; }
+  .rows .actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .5rem; }
+  .toolbar { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.2rem; }
+  details.spoiler { margin-top: 1.2rem; font-size: 1rem; }
+  details.spoiler summary { cursor: pointer; font-weight: 700; }
+  .confirm { margin-top: 1rem; padding: .9rem; border-radius: 12px; background: #FDE3E6; }
+  .confirm p { margin: 0 0 .6rem; font-size: 1rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+<canvas id="snow" aria-hidden="true"></canvas>
+
+<svg class="first-star" viewBox="0 0 40 40" aria-hidden="true">
+  <path d="M20 0 L23 17 L40 20 L23 23 L20 40 L17 23 L0 20 L17 17 Z" fill="#FFE9A6"/>
+  <circle cx="20" cy="20" r="3.2" fill="#fff"/>
+</svg>
+
+<!-- Dom na Pszowskiej -->
+<svg class="house" viewBox="0 0 400 130" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+  <path d="M0 112 Q100 98 200 108 T400 104 V130 H0Z" fill="#E9EEFF"/>
+  <g transform="translate(250 0)">
+    <path d="M10 108 V58 L60 22 L110 58 V108Z" fill="#0A112B"/>
+    <rect x="80" y="26" width="12" height="22" fill="#0A112B"/>
+    <path d="M78 24 h16 v5 h-16z" fill="#F4F6FF"/>
+    <path d="M2 61 L60 18 L118 61 L112 64 L60 26 L8 64Z" fill="#F4F6FF"/>
+    <rect class="win" x="24" y="70" width="18" height="18" rx="2" fill="#F4C542"/>
+    <rect class="win" x="78" y="70" width="18" height="18" rx="2" fill="#F7B33B"/>
+    <rect class="win" x="51" y="44" width="18" height="14" rx="7" fill="#F4C542"/>
+    <rect x="50" y="80" width="20" height="28" rx="2" fill="#7A2430"/>
+    <path d="M24 79 h18 M33 70 v18 M78 79 h18 M87 70 v18" stroke="#0A112B" stroke-width="2"/>
+  </g>
+  <g transform="translate(205 40)">
+    <path d="M18 0 L36 30 H26 L40 52 H28 L44 72 H-8 L8 52 H-4 L10 30 H0Z" fill="#0F3D2C"/>
+    <rect x="14" y="72" width="8" height="8" fill="#0A112B"/>
+    <circle cx="10" cy="44" r="2.4" fill="#D62839"/><circle cx="26" cy="58" r="2.4" fill="#F4C542"/><circle cx="20" cy="24" r="2.2" fill="#F4C542"/><circle cx="4" cy="64" r="2.2" fill="#F28AB2"/>
+  </g>
+  <g fill="#0F3D2C" transform="translate(30 62)">
+    <path d="M14 0 L28 24 H20 L32 44 H-4 L8 24 H0Z"/>
+  </g>
+</svg>
+
+<main id="app">
+
+  <!-- Landing (no personal link) -->
+  <section id="view-landing" hidden>
+    <h1>Mikołajki na&nbsp;Pszowskiej</h1>
+    <p class="lead">Ta strona działa tylko z osobistym linkiem. Otwórz link, który dostałeś lub dostałaś od organizatora w wiadomości.</p>
+    <p class="notyou"><a href="#organizator" style="color:#DCE3FF">Jestem organizatorem</a></p>
+  </section>
+
+  <!-- Broken link -->
+  <section id="view-error" hidden>
+    <h1>Ten link jest niepełny</h1>
+    <p class="lead">Prawdopodobnie ucięła się jego końcówka. Poproś organizatora, żeby wysłał go jeszcze raz, i otwórz go w całości.</p>
+  </section>
+
+  <!-- Reveal -->
+  <section id="view-reveal" hidden>
+    <h1>Cześć, <span id="giverName"></span>!</h1>
+    <p class="lead" id="lead">Pod choinką czeka Twój los. Dotknij prezentu, żeby go otworzyć.</p>
+
+    <button class="gift idle" id="gift" type="button" aria-label="Otwórz prezent">
+      <svg viewBox="0 0 200 210" aria-hidden="true">
+        <defs>
+          <pattern id="folk" width="34" height="34" patternUnits="userSpaceOnUse">
+            <rect width="34" height="34" fill="#D62839"/>
+            <g transform="translate(17 17)">
+              <g fill="#FFF8EC">
+                <ellipse rx="2.6" ry="6" cy="-6"/><ellipse rx="2.6" ry="6" cy="-6" transform="rotate(60)"/>
+                <ellipse rx="2.6" ry="6" cy="-6" transform="rotate(120)"/><ellipse rx="2.6" ry="6" cy="-6" transform="rotate(180)"/>
+                <ellipse rx="2.6" ry="6" cy="-6" transform="rotate(240)"/><ellipse rx="2.6" ry="6" cy="-6" transform="rotate(300)"/>
+              </g>
+              <circle r="3" fill="#F4C542"/>
+            </g>
+            <g fill="#1F8A5B">
+              <path d="M0 0 q5 3 0 8 q-5 -3 0 -8z"/><path d="M34 0 q5 3 0 8 q-5 -3 0 -8z"/>
+              <path d="M0 26 q5 3 0 8 q-5 -3 0 -8z"/><path d="M34 26 q5 3 0 8 q-5 -3 0 -8z"/>
+            </g>
+          </pattern>
+          <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="#FFF3C4" stop-opacity="1"/>
+            <stop offset=".45" stop-color="#F4C542" stop-opacity=".6"/>
+            <stop offset="1" stop-color="#F4C542" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <ellipse cx="100" cy="200" rx="78" ry="8" fill="#000" opacity=".3"/>
+
+        <g id="burst">
+          <circle cx="100" cy="92" r="92" fill="url(#glow)"/>
+          <g fill="#F4C542" opacity=".75" transform="translate(100 92)">
+            <path d="M-6 0 L0 -96 L6 0Z"/><path d="M-6 0 L0 -96 L6 0Z" transform="rotate(30)"/>
+            <path d="M-6 0 L0 -96 L6 0Z" transform="rotate(60)"/><path d="M-6 0 L0 -96 L6 0Z" transform="rotate(90)"/>
+            <path d="M-6 0 L0 -96 L6 0Z" transform="rotate(120)"/><path d="M-6 0 L0 -96 L6 0Z" transform="rotate(150)"/>
+            <path d="M-6 0 L0 -96 L6 0Z" transform="rotate(180)"/><path d="M-6 0 L0 -96 L6 0Z" transform="rotate(210)"/>
+            <path d="M-6 0 L0 -96 L6 0Z" transform="rotate(240)"/><path d="M-6 0 L0 -96 L6 0Z" transform="rotate(270)"/>
+            <path d="M-6 0 L0 -96 L6 0Z" transform="rotate(300)"/><path d="M-6 0 L0 -96 L6 0Z" transform="rotate(330)"/>
+          </g>
+        </g>
+
+        <!-- box body -->
+        <rect x="30" y="96" width="140" height="100" rx="8" fill="url(#folk)"/>
+        <rect x="30" y="96" width="140" height="16" fill="#000" opacity=".18"/>
+        <rect x="89" y="96" width="22" height="100" fill="#F4C542"/>
+        <rect x="89" y="96" width="5" height="100" fill="#FFE08A"/>
+
+        <!-- lid -->
+        <g id="lid">
+          <rect x="22" y="72" width="156" height="30" rx="8" fill="url(#folk)"/>
+          <rect x="22" y="94" width="156" height="8" rx="3" fill="#000" opacity=".15"/>
+          <rect x="89" y="72" width="22" height="30" fill="#F4C542"/>
+          <rect x="89" y="72" width="5" height="30" fill="#FFE08A"/>
+          <g id="bow">
+            <path d="M100 72 C70 40, 46 58, 60 72 C66 78, 88 76, 100 72Z" fill="#F4C542" stroke="#C99A1E" stroke-width="2"/>
+            <path d="M100 72 C130 40, 154 58, 140 72 C134 78, 112 76, 100 72Z" fill="#F4C542" stroke="#C99A1E" stroke-width="2"/>
+            <path d="M96 74 L84 98 L92 96 L96 104Z M104 74 L116 98 L108 96 L104 104Z" fill="#E5B232"/>
+            <circle cx="100" cy="72" r="9" fill="#FFD35C" stroke="#C99A1E" stroke-width="2"/>
+          </g>
+        </g>
+      </svg>
+    </button>
+
+    <button class="cta" id="openBtn" type="button">Otwórz prezent</button>
+
+    <div class="result" id="result" hidden aria-live="polite">
+      <p class="for">Kupujesz prezent dla</p>
+      <p class="who" id="recipient"></p>
+      <p class="secret">Ciii… nikomu nie mów. To tajemnica aż do Wigilii.</p>
+
+      <div class="card">
+        <svg class="rosette" viewBox="-50 -50 100 100" aria-hidden="true" id="rosette"></svg>
+        <h2 id="evTitle"></h2>
+        <p class="date" id="evDate"></p>
+        <p class="place" id="evPlace"></p>
+        <p class="note" id="evNote"></p>
+        <p class="budget" id="evBudget" hidden></p>
+        <p class="countdown" id="countdown"></p>
+      </div>
+      <p class="notyou">To nie Twoje imię na górze? Zamknij stronę, żeby nie zepsuć komuś niespodzianki.</p>
+    </div>
+  </section>
+
+  <!-- Organizer -->
+  <section id="view-admin" class="admin" hidden>
+    <h1>Losowanie</h1>
+    <p class="lead">Tu losujesz pary i dostajesz osobny link dla każdej osoby. Nikt, łącznie z Tobą, nie widzi wyników.</p>
+
+    <div class="panel" id="setup">
+      <h2>Kto bierze udział</h2>
+      <div class="field">
+        <label for="people">Uczestnicy</label>
+        <textarea id="people" spellcheck="false" placeholder="Babcia Hania, Dziadek Józek&#10;Anna, Piotr&#10;Kasia, Tomek&#10;Ola"></textarea>
+        <p class="hint">Jedna linia to jedna para lub jedno gospodarstwo, imiona po przecinku. Osoby z tej samej linii nie wylosują siebie nawzajem.</p>
+      </div>
+
+      <div class="field">
+        <label for="baseUrl">Adres strony</label>
+        <input type="url" id="baseUrl" spellcheck="false">
+        <p class="hint">Na ten adres prowadzą linki. Zostaw adres swojej strony na GitHub Pages.</p>
+      </div>
+
+      <p class="error" id="formError" hidden></p>
+      <p style="margin-top:1.3rem"><button class="btn primary" id="drawBtn" type="button">Losuj</button></p>
+    </div>
+
+    <div class="panel" id="links" hidden>
+      <h2>Linki do wysłania</h2>
+      <p class="hint">Wyślij każdej osobie jej link w prywatnej wiadomości, nie na grupie. Nie otwieraj cudzych linków, bo zobaczysz wynik.</p>
+      <ul class="rows" id="rows"></ul>
+      <div class="toolbar">
+        <button class="btn" id="copyAll" type="button">Kopiuj wszystkie wiadomości</button>
+        <button class="btn" id="downloadTxt" type="button">Pobierz jako .txt</button>
+        <button class="btn" id="redraw" type="button">Losuj od nowa</button>
+      </div>
+      <div class="confirm" id="confirmRedraw" hidden>
+        <p>Wysłane już linki nadal będą działać i pokazywać stare wyniki. Losuj od nowa tylko wtedy, gdy nikt jeszcze nie dostał linku.</p>
+        <button class="btn primary" id="confirmYes" type="button">Tak, losuj od nowa</button>
+        <button class="btn" id="confirmNo" type="button">Anuluj</button>
+      </div>
+      <details class="spoiler">
+        <summary>Pokaż wszystkie pary (tylko jeśli sam nie grasz)</summary>
+        <ul id="pairs"></ul>
+      </details>
+      <p class="warn" id="fileWarn" hidden>Otworzyłeś ten plik z dysku, więc linki prowadzą do Twojego komputera. Wpisz wyżej adres strony na GitHub Pages i losuj ponownie.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ============================================================
+   USTAWIENIA – zmień tutaj szczegóły Wigilii
+   ============================================================ */
+const CONFIG = {
+  title:   "Wigilia",
+  dateISO: "2026-12-24",              // do odliczania
+  date:    "czwartek, 24 grudnia",
+  place:   "Dom na Pszowskiej",
+  note:    "Prezenty kładziemy pod choinkę, a otwieramy po kolacji wigilijnej.",
+  budget:  "do 150 zł",                // puste "" = nie pokazuj
+  key:     "pszowska-2026"             // zmiana klucza unieważnia stare linki
+};
+/* ============================================================ */
+
+const $ = (id) => document.getElementById(id);
+const enc = new TextEncoder(), dec = new TextDecoder();
+
+/* ---------- link encoding (scrambled, not readable at a glance) ---------- */
+function b64url(bytes) {
+  let s = ""; bytes.forEach(b => s += String.fromCharCode(b));
+  return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function unb64url(str) {
+  str = str.replace(/-/g, "+").replace(/_/g, "/");
+  while (str.length % 4) str += "=";
+  const s = atob(str); const out = new Uint8Array(s.length);
+  for (let i = 0; i < s.length; i++) out[i] = s.charCodeAt(i);
+  return out;
+}
+function scramble(bytes) {
+  const k = enc.encode(CONFIG.key);
+  return bytes.map((b, i) => b ^ k[i % k.length] ^ ((i * 37 + 11) & 255));
+}
+function encodeTicket(obj) {
+  const raw = enc.encode(JSON.stringify(obj));
+  let sum = 0; raw.forEach(b => sum = (sum * 31 + b) & 255);
+  const out = new Uint8Array(raw.length + 1);
+  out.set(scramble(raw)); out[raw.length] = sum;
+  return b64url(out);
+}
+function decodeTicket(token) {
+  try {
+    const all = unb64url(token);
+    if (all.length < 3) return null;
+    const raw = scramble(all.slice(0, -1));
+    let sum = 0; raw.forEach(b => sum = (sum * 31 + b) & 255);
+    if (sum !== all[all.length - 1]) return null;
+    const obj = JSON.parse(dec.decode(raw));
+    return (obj && typeof obj.g === "string" && typeof obj.r === "string") ? obj : null;
+  } catch (e) { return null; }
+}
+
+/* ---------- helpers ---------- */
+function plDays(n) {
+  if (n === 1) return "został 1 dzień";
+  const m10 = n % 10, m100 = n % 100;
+  if (m10 >= 2 && m10 <= 4 && !(m100 >= 12 && m100 <= 14)) return `zostały ${n} dni`;
+  return `zostało ${n} dni`;
+}
+function countdownText() {
+  const [y, m, d] = CONFIG.dateISO.split("-").map(Number);
+  const target = new Date(y, m - 1, d);
+  const now = new Date(); const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const days = Math.round((target - today) / 86400000);
+  if (days > 0) return `Do Wigilii ${plDays(days)}.`;
+  if (days === 0) return "Wigilia jest dziś! Wesołych Świąt!";
+  return "Wesołych Świąt!";
+}
+function buildRosette(svg) {
+  const ns = "http://www.w3.org/2000/svg";
+  const add = (tag, attrs) => { const el = document.createElementNS(ns, tag); for (const k in attrs) el.setAttribute(k, attrs[k]); svg.appendChild(el); return el; };
+  for (let i = 0; i < 12; i++) add("ellipse", { cx: 0, cy: -34, rx: 7, ry: 14, fill: "#1F8A5B", transform: `rotate(${i * 30})` });
+  for (let i = 0; i < 12; i++) add("ellipse", { cx: 0, cy: -24, rx: 6, ry: 12, fill: "#D62839", transform: `rotate(${i * 30 + 15})` });
+  add("circle", { r: 18, fill: "#F4C542" });
+  for (let i = 0; i < 8; i++) add("ellipse", { cx: 0, cy: -10, rx: 3.5, ry: 7, fill: "#F28AB2", transform: `rotate(${i * 45})` });
+  add("circle", { r: 5, fill: "#16204A" });
+}
+
+/* ---------- snow ---------- */
+(function snow() {
+  const c = $("snow"), ctx = c.getContext("2d");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let w, h, flakes = [];
+  function size() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = innerWidth; h = innerHeight; c.width = w * dpr; c.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const count = Math.round(Math.min(110, w * h / 9000));
+    flakes = Array.from({ length: count }, () => ({
+      x: Math.random() * w, y: Math.random() * h, r: Math.random() * 2.4 + .6,
+      vy: Math.random() * .6 + .25, ph: Math.random() * 6.28, a: Math.random() * .5 + .45
+    }));
+  }
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    for (const f of flakes) {
+      ctx.globalAlpha = f.a; ctx.fillStyle = "#fff";
+      ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, 6.283); ctx.fill();
+    }
+  }
+  function tick() {
+    for (const f of flakes) {
+      f.y += f.vy * (f.r * .6 + .5); f.ph += .01; f.x += Math.sin(f.ph) * .3;
+      if (f.y > h + 5) { f.y = -5; f.x = Math.random() * w; }
+    }
+    draw(); requestAnimationFrame(tick);
+  }
+  addEventListener("resize", size); size();
+  reduce ? draw() : tick();
+})();
+
+/* ---------- confetti (paper-cut shapes) ---------- */
+function confetti() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const colors = ["#D62839", "#1F8A5B", "#F4C542", "#F28AB2", "#FFF8EC", "#3B6FD8"];
+  const shapes = [
+    c => `<svg viewBox="-10 -10 20 20"><g fill="${c}">${[0,60,120,180,240,300].map(a => `<ellipse rx="2.6" ry="6" cy="-4" transform="rotate(${a})"/>`).join("")}</g><circle r="2.2" fill="#fff"/></svg>`,
+    c => `<svg viewBox="-10 -10 20 20"><path d="M0 -10 L2.5 -2.5 L10 0 L2.5 2.5 L0 10 L-2.5 2.5 L-10 0 L-2.5 -2.5Z" fill="${c}"/></svg>`,
+    c => `<svg viewBox="-10 -10 20 20"><path d="M0 9 C-12 0 -6 -10 0 -4 C6 -10 12 0 0 9Z" fill="${c}"/></svg>`,
+    c => `<svg viewBox="-10 -10 20 20"><path d="M0 -10 Q6 0 0 10 Q-6 0 0 -10Z" fill="${c}"/></svg>`
+  ];
+  const box = document.createElement("div"); box.className = "confetti"; box.setAttribute("aria-hidden", "true");
+  for (let i = 0; i < 70; i++) {
+    const s = document.createElement("span");
+    const size = 12 + Math.random() * 18;
+    s.style.cssText = `--x:${Math.random() * 100}vw;--s:${size}px;--d:${2.6 + Math.random() * 2.4}s;--delay:${Math.random() * .7}s;--dx:${(Math.random() - .5) * 160}px;--r:${(Math.random() - .5) * 900}deg`;
+    s.innerHTML = shapes[i % shapes.length](colors[i % colors.length]);
+    box.appendChild(s);
+  }
+  document.body.appendChild(box);
+  setTimeout(() => box.remove(), 6000);
+}
+
+/* ---------- reveal view ---------- */
+let opened = false;
+function showReveal(t) {
+  $("giverName").textContent = t.g;
+  $("recipient").textContent = t.r;
+  $("evTitle").textContent = CONFIG.title;
+  $("evDate").textContent = CONFIG.date;
+  $("evPlace").textContent = CONFIG.place;
+  $("evNote").textContent = CONFIG.note;
+  if (CONFIG.budget) { $("evBudget").textContent = "Budżet: " + CONFIG.budget; $("evBudget").hidden = false; }
+  $("countdown").textContent = countdownText();
+  document.title = `Mikołajki – ${t.g}`;
+}
+function openGift() {
+  if (opened) return; opened = true;
+  const gift = $("gift");
+  gift.classList.remove("idle"); gift.classList.add("opening");
+  gift.setAttribute("aria-label", "Prezent otwarty"); gift.disabled = true;
+  $("openBtn").hidden = true;
+  $("lead").textContent = "Wylosowane!";
+  setTimeout(() => gift.classList.add("open"), 650);
+  setTimeout(confetti, 900);
+  setTimeout(() => {
+    const r = $("result"); r.hidden = false; r.classList.add("show");
+    window.scrollTo({ top: r.getBoundingClientRect().top + scrollY - innerHeight * 0.28, behavior: "smooth" });
+  }, 1150);
+}
+$("gift").addEventListener("click", openGift);
+$("openBtn").addEventListener("click", openGift);
+
+/* ---------- drawing ---------- */
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = crypto.getRandomValues(new Uint32Array(1))[0] % (i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function parsePeople(text) {
+  const people = []; const seen = new Set(); let home = 0; const homes = [];
+  for (const line of text.split("\n")) {
+    const names = line.split(/[,;]/).map(s => s.trim()).filter(Boolean);
+    if (!names.length) continue;
+    for (const n of names) {
+      const key = n.toLocaleLowerCase("pl");
+      if (seen.has(key)) throw new Error(`Imię „${n}” występuje dwa razy. Dopisz coś, żeby je rozróżnić, np. „Anna K.”.`);
+      seen.add(key); people.push({ name: n, home });
+    }
+    homes.push(names); home++;
+  }
+  return { people, homes };
+}
+// One big gift chain: everyone gives to the next person, no one draws someone from their own line.
+function drawChain(people) {
+  for (let attempt = 0; attempt < 20000; attempt++) {
+    const order = shuffle(people.slice());
+    let ok = true;
+    for (let i = 0; i < order.length; i++) {
+      if (order[i].home === order[(i + 1) % order.length].home) { ok = false; break; }
+    }
+    if (ok) return order.map((p, i) => ({ giver: p, recipient: order[(i + 1) % order.length] }));
+  }
+  return null;
+}
+
+const STORE = "mikolajki-pszowska";
+function save(state) { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} }
+function load() { try { return JSON.parse(localStorage.getItem(STORE) || "null"); } catch (e) { return null; } }
+
+function doDraw() {
+  const err = $("formError"); err.hidden = true;
+  let parsed;
+  try { parsed = parsePeople($("people").value); } catch (e) { err.textContent = e.message; err.hidden = false; return; }
+  const { people, homes } = parsed;
+  if (people.length < 3) { err.textContent = "Potrzebne są co najmniej 3 osoby."; err.hidden = false; return; }
+  const biggest = Math.max(...homes.map(h => h.length));
+  if (biggest > people.length / 2) { err.textContent = "Jedna linia ma więcej niż połowę wszystkich osób, więc nie da się ułożyć losowania. Podziel ją na mniejsze."; err.hidden = false; return; }
+
+  const pairs = drawChain(people);
+  if (!pairs) { err.textContent = "Nie udało się ułożyć losowania z tymi wykluczeniami. Spróbuj podzielić duże linie."; err.hidden = false; return; }
+
+  let base = $("baseUrl").value.trim() || (location.origin + location.pathname);
+  base = base.split("#")[0];
+  const list = pairs.map(({ giver, recipient }) => {
+    const t = { g: giver.name, r: recipient.name };
+    return { name: giver.name, url: base + "#" + encodeTicket(t), recipient: recipient.name };
+  }).sort((a, b) => a.name.localeCompare(b.name, "pl"));
+
+  const state = { people: $("people").value, base, list };
+  save(state); renderLinks(state);
+}
+
+function msgFor(item) {
+  return `Cześć, ${item.name}! 🎄 Tu Twój los na mikołajki na Wigilię w Domu na Pszowskiej. Kliknij link i otwórz prezent (tylko Ty go otwieraj 🤫):\n${item.url}`;
+}
+async function copy(text, btn) {
+  try { await navigator.clipboard.writeText(text); }
+  catch (e) {
+    const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); } catch (e2) {} ta.remove();
+  }
+  if (btn) { const old = btn.textContent; btn.textContent = "Skopiowano"; setTimeout(() => btn.textContent = old, 1500); }
+}
+function renderLinks(state) {
+  const ul = $("rows"); ul.innerHTML = "";
+  for (const item of state.list) {
+    const li = document.createElement("li");
+    const name = document.createElement("div"); name.className = "name"; name.textContent = item.name;
+    const actions = document.createElement("div"); actions.className = "actions";
+    const wa = document.createElement("a"); wa.className = "btn wa"; wa.textContent = "WhatsApp";
+    wa.href = "https://wa.me/?text=" + encodeURIComponent(msgFor(item)); wa.target = "_blank"; wa.rel = "noopener";
+    const sms = document.createElement("a"); sms.className = "btn"; sms.textContent = "SMS";
+    sms.href = "sms:?&body=" + encodeURIComponent(msgFor(item));
+    const cp = document.createElement("button"); cp.className = "btn"; cp.type = "button"; cp.textContent = "Kopiuj wiadomość";
+    cp.addEventListener("click", () => copy(msgFor(item), cp));
+    actions.append(wa, sms, cp); li.append(name, actions); ul.appendChild(li);
+  }
+  const pairs = $("pairs"); pairs.innerHTML = "";
+  for (const item of state.list) {
+    const li = document.createElement("li");
+    li.textContent = `${item.name} → ${item.recipient}`;
+    pairs.appendChild(li);
+  }
+  $("fileWarn").hidden = !state.base.startsWith("file:");
+  $("links").hidden = false;
+}
+
+$("drawBtn").addEventListener("click", () => {
+  if (load() && !$("links").hidden) { $("confirmRedraw").hidden = false; $("confirmRedraw").scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+  doDraw(); $("links").scrollIntoView({ behavior: "smooth" });
+});
+$("redraw").addEventListener("click", () => { $("confirmRedraw").hidden = false; });
+$("confirmNo").addEventListener("click", () => { $("confirmRedraw").hidden = true; });
+$("confirmYes").addEventListener("click", () => { $("confirmRedraw").hidden = true; doDraw(); });
+$("copyAll").addEventListener("click", (e) => { const s = load(); if (s) copy(s.list.map(msgFor).join("\n\n"), e.currentTarget); });
+$("downloadTxt").addEventListener("click", () => {
+  const s = load(); if (!s) return;
+  const blob = new Blob([s.list.map(i => `${i.name}\n${i.url}`).join("\n\n")], { type: "text/plain;charset=utf-8" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "mikolajki-linki.txt"; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+});
+
+function initAdmin() {
+  const s = load();
+  $("baseUrl").value = s?.base || (location.origin + location.pathname);
+  if (s) {
+    $("people").value = s.people || "";
+    if (s.list?.length) renderLinks(s);
+  }
+}
+
+/* ---------- router ---------- */
+function route() {
+  const hash = decodeURIComponent(location.hash.slice(1));
+  ["landing", "error", "reveal", "admin"].forEach(v => $("view-" + v).hidden = true);
+  $("app").classList.toggle("wide", hash === "organizator");
+  if (!hash) { $("view-landing").hidden = false; return; }
+  if (hash === "organizator") { $("view-admin").hidden = false; initAdmin(); return; }
+  const t = decodeTicket(hash);
+  if (!t) { $("view-error").hidden = false; return; }
+  showReveal(t); $("view-reveal").hidden = false;
+}
+buildRosette($("rosette"));
+addEventListener("hashchange", () => location.reload());
+route();
+</script>
+</body>
+</html>
