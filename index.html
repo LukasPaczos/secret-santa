@@ -242,7 +242,7 @@
 
   <!-- Landing (no personal link) -->
   <section id="view-landing" hidden>
-    <h1>Mikołajki na&nbsp;Pszowskiej</h1>
+    <h1>Święta na&nbsp;Pszowskiej</h1>
     <p class="lead">Ta strona działa tylko z osobistym linkiem. Otwórz link, który dostałeś lub dostałaś od organizatora w wiadomości.</p>
     <p class="notyou"><a href="#organizator" style="color:#DCE3FF">Jestem organizatorem</a></p>
   </section>
@@ -530,7 +530,7 @@ function showReveal(t) {
   $("evNote").textContent = CONFIG.note;
   if (CONFIG.budget) { $("evBudget").textContent = "Budżet: " + CONFIG.budget; $("evBudget").hidden = false; }
   $("countdown").textContent = countdownText();
-  document.title = `Mikołajki – ${t.g}`;
+  document.title = `Święta – ${t.g}`;
 }
 function openGift() {
   if (opened) return; opened = true;
@@ -606,7 +606,7 @@ function doDraw() {
 }
 
 function msgFor(item) {
-  return `Cześć, ${item.name}! 🎄 Tu Twój los na mikołajki na Wigilię w Domu na Pszowskiej. Kliknij link i otwórz prezent (tylko Ty go otwieraj 🤫):\n${item.url}`;
+  return `Cześć, ${item.name}! 🎄 Tu Twój prywatny los na Wigilię w Domu na Pszowskiej. Kliknij link dowiedz się komu sprawisz prezent:\n${item.url}`;
 }
 async function copy(text, btn) {
   try { await navigator.clipboard.writeText(text); }
